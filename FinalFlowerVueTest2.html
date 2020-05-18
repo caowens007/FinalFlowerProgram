@@ -1,0 +1,143 @@
+<html>
+<!--  Program Description:  This program creates a webpage about my garden
+Author: Chris Owens
+Date:   5/13/20
+Version: 3.0
+-->
+<head>
+  <link rel="stylesheet" type="text/css" href="./mainFiles/main.css">
+</head>
+<script src="./mainFiles/main.js">
+</script>
+<body>
+
+  <!--  Header and pictures -->
+  <div class="container">
+    <div class="pad">
+      <div class="wrapper">
+        <img src = "./images/geraniumResized.png" alt=" "style="float:left"></img>
+        <img src = "./images/daisyResized.png" alt=" "style="float:right"></img>
+      </div>
+
+  <!--  beginning of garden info -->
+    <h3 class="intro" >
+      <div id="app1">
+        <span v-bind:title="message"> My Garden </span>
+      </div>
+      <div class = "wrapper">
+        <img src = "./images/flowerWatercolorResized.png" alt=" "class="aligncenter"></img>
+      </div></h3>
+
+  <!--  list of actions to perform on the page -->
+      <div class="info-box">Click a button to:
+        <div id="app2">
+          <ol>
+            <li v-for="choices in flowerList">
+                  {{ choices.text }}
+            </li>
+          </ol>
+        </div>
+      </div>
+
+   <!--  Add a flower to the database -->
+     <div class="form-wrapper">
+       <div id="app3">
+         <label>1) FlowerName</label>
+         <input class ="flowerNames" v-model="flowerName" type="text"/></input>
+         <label>Color</label>
+         <input class ="colors" v-model="color" type="text"/></input>
+         <label>Number of Flowers</label>
+         <input class ="numbersOf" v-model="numberOf" type="text"/></input>
+         <button v-on:click="saveFlower">Create Flower</button>
+       </div>
+     </div>
+
+    <!--  Find a flower in the database -->
+     <div class="form-wrapper">
+        <div id="app4">
+          <label>2) FlowerName</label>
+          <input v-model="flowerToGet"/></input>
+          <button v-on:click="displayFlower">Get Flower</button>
+          <div class="my-items">
+            <h3> {{ flower.flowerName }} </h3>
+            <div class="flower-color" > {{ flower.color }} </div>
+            <div class="flower-quantity"> {{ flower.numberOf}} </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
+
+<!--   JavaScript code starts here  -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+<script>
+//hover over message
+  var myGarden = new Vue({
+    el: '#app1',
+    data: {
+      message: 'Welcome to my flower garden. See what is growing. '
+    }
+  })
+</script>
+
+<script>
+//present user with choice of actions on page
+  var myChoices = new Vue({
+    el: '#app2',
+    data: {
+      flowerList: [
+        { text: 'Add a new flower (Create Flower)' },
+        { text: 'Find a flower (Get Flower)' }
+      ]
+    }
+  })
+</script>
+
+<script>
+// Add a flower to the database
+  var putflowers = new Vue({
+    el:'#app3',
+    data:{
+      flower: {},
+      flowerName: '',
+      color: '',
+      numberOf: ''
+    },
+    methods: {
+      saveFlower: async function() {
+          const flowerName = this.flowerName
+          const color = this.color
+          const numberOf = this.numberOf
+          const fetchResult = await fetch(`https://bn55wpg4jj.execute-api.us-east-2.amazonaws.com/default/flower_dbNames?action=putFlower&flowerName=${flowerName}&color=${color}&numberOf=${numberOf}`)
+          const fetchParsed = await fetchResult.json()
+          console.log(fetchParsed)
+          const infoBox = document.querySelector('.info-box')
+          infoBox.innerHTML = fetchParsed
+        }
+      }
+    })
+</script>
+
+<script>
+// Get a flower from the database
+  var getflowers = new Vue({
+    el: '#app4',
+    data: {
+      flower: {},
+      flowerToGet: ''
+    },
+    methods: {
+      displayFlower: async function (){
+          const flowerName = this.flowerToGet
+          const fetchResult =  await fetch(`https://bn55wpg4jj.execute-api.us-east-2.amazonaws.com/default/flower_dbNames?action=getFlower&flowerName=${flowerName}`)
+          const fetchParsed =  await fetchResult.json()
+          console.log(fetchParsed)
+          this.flower = fetchParsed
+    }
+  }
+})
+</script>
