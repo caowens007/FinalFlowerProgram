@@ -1,0 +1,59 @@
+body {
+  background: 	#98FB98;
+  font-family:sans-serif;
+
+}
+.black-header
+{
+  color: black;
+}
+.my-button {
+        font-size: 3em;
+    }
+    .info-box {
+        background: #ffe9af;
+        padding: 1em;
+        color: #493629;
+        border: 1px solid #a64c1e;
+        border-radius: 8px;
+    }
+    .form-wrapper {
+        padding: 1em;
+        background: #beafff;
+        color: #161209;
+        margin: 1em;
+    }
+.pad
+{
+  padding: 10px 5px;
+}
+h3.intro
+{
+  text-align: center;
+  font-style: italic;
+  font-size: 300%;
+}
+#textbox
+{
+  width: 400px;
+  Display: block;
+  float: left;
+}
+.alignleft
+{
+  float: left;
+}
+.alignright
+{
+  float: right;
+}
+.flower-color:before
+{
+  content: "Color:  ";
+  font-style: italic;
+}
+.flower-quantity:before
+{
+  content: "Number in garden:  ";
+  font-style: italic;
+}
